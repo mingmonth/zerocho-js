@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>끝말잇기</title>
+  </head>
+  <body>
+    <div id="div__order"><span id="order">1</span>번째 참가자</div>
+    <div id="div__word">제시어: <span id="word"></span></div>
+    <input type="text" />
+    <button>입력</button>
+    <script>
+      const number = parseInt(prompt("몇 명이 참가하나요?"), 10);
+      console.log("number:", !!number);
+      if (!!!number) {
+        alert("숫자를 입력해주세요");
+        const $div_order = document.querySelector("#div__order");
+        const $div_word = document.querySelector("#div__word");
+        console.log($div_order);
+        console.log($div_word);
+        $div_order.textContent = "참가자 숫자가 잘못되었습니다.";
+        $div_word.textContent = "다시 시작해주세요.";
+      } else {
+        const $button = document.querySelector("button");
+        const $input = document.querySelector("input");
+        const $word = document.querySelector("#word");
+        const $order = document.querySelector("#order");
+        let word; // 제시어
+        let newWord; // 새로 입력한 단어
+        let order = 1; // 순서
+        $input.focus();
+
+        const onClickButton = () => {
+          if (!word || word[word.length - 1] === newWord[0]) {
+            // 비어 있다
+            word = newWord;
+            $word.textContent = word;
+            if (number > order) {
+              order = parseInt(order) + 1;
+              console.log(order);
+            } else {
+              order = 1;
+              console.log(order);
+            }
+            $order.textContent = order;
+          } else {
+            console.log("틀림");
+            alert("틀렸습니다. 다시 시도해주세요!");
+          }
+          $input.value = "";
+          $input.focus();
+        };
+        const onInput = (event) => {
+          newWord = event.target.value;
+        };
+
+        const onKeyup = (event) => {
+          if (event.keyCode === 13) {
+            console.log("abcabc");
+            event.preventDefault();
+            $button.click();
+          }
+        };
+
+        $button.addEventListener("click", onClickButton);
+        $input.addEventListener("input", onInput);
+        $input.addEventListener("keyup", onKeyup);
+      }
+    </script>
+  </body>
+</html>
