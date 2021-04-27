@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>쿵쿵따</title>
+  </head>
+  <body>
+    <div>참가자 <span id="order">1</span>번 순서입니다.</div>
+    <div>제시어:<span id="word"></span></div>
+    <input type="text" />
+    <button>입력</button>
+    <script>
+      let word;
+      let newWord;
+      let order = 1;
+      const number = parseInt(prompt(), 10);
+      if (!!!number) {
+        console.log("cancel");
+      } else {
+        console.log(number);
+        const $input = document.querySelector("input");
+        const $button = document.querySelector("button");
+        const $word = document.querySelector("#word");
+        const $order = document.querySelector("#order");
+        console.log($input);
+        console.log($button);
+        console.log($word.textContent);
+        console.log($order.textContent);
+        $input.focus();
+        word = $word.textContent;
+
+        const onClick = () => {
+          if (newWord.length === 3) {
+            console.log("쿵쿵따!");
+            if (!word || word[word.length - 1] === newWord[0]) {
+              word = newWord;
+              $word.textContent = word;
+              if (number > order) {
+                order += 1;
+              } else {
+                order = 1;
+              }
+              $order.textContent = order;
+            } else {
+              console.log("틀렸습니다.");
+            }
+          } else {
+            console.log("세글자 단어만 입력 가능합니다.");
+          }
+          $input.value = "";
+          $input.focus();
+        };
+        const onInput = (e) => {
+          newWord = e.target.value;
+          console.log(newWord.length);
+        };
+        const onKeyup = (e) => {
+          if (e.keyCode === 13) {
+            e.preventDefault();
+            $button.click();
+          }
+        };
+        $input.addEventListener("input", onInput);
+        $input.addEventListener("keyup", onKeyup);
+        $button.addEventListener("click", onClick);
+      }
+    </script>
+  </body>
+</html>
