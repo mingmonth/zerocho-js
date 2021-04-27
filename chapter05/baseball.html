@@ -4,7 +4,123 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>야구게임</title>
   </head>
-  <body></body>
+  <body>
+    <div><span id="count">1</span>회차</div>
+    <input
+      id="input"
+      type="number"
+      maxlength="4"
+      oninput="maxLengthCheck(this)"
+      min="1"
+    />
+    <button>도전</button>
+    <div><span id="result">no result</span></div>
+    <script>
+      const $count = document.querySelector("#count");
+      const $result = document.querySelector("#result");
+      const $button = document.querySelector("button");
+      const $input = document.querySelector("input");
+
+      let generateNumber = [];
+      let i = 0;
+      let inputNumber = [];
+      let result = "";
+      let count = 0;
+
+      const maxLengthCheck = (object) => {
+        if (object.value.length > object.maxLength) {
+          object.value = object.value.slice(0, object.maxLength);
+        }
+      };
+
+      const rand_1_9 = () => {
+        return Math.floor(Math.random() * 9) + 1;
+      };
+
+      while (true) {
+        if (generateNumber.length === 4) {
+          // 탈출조건...
+          break;
+        }
+        let rand = rand_1_9();
+        console.log(rand);
+        if (generateNumber.includes(rand)) {
+          console.log("같은 수 입니다.");
+        } else {
+          generateNumber[i] = rand;
+          i++;
+        }
+      }
+
+      const onInput = (e) => {
+        console.log(e.target.value);
+        console.log(e.target.value.length);
+        if (e.target.value) {
+          inputNumber[e.target.value.length - 1] = parseInt(
+            e.target.value.substr(e.target.value.length - 1, 1)
+          );
+          if (inputNumber.length > e.target.value.length) {
+            inputNumber.pop(0);
+          }
+          console.log(inputNumber);
+          console.log("inputNumber.lenght:", inputNumber.length);
+        }
+      };
+
+      const comapreNumber = () => {
+        let result;
+        console.log(generateNumber);
+        console.log(inputNumber);
+        let strike = 0;
+        let ball = 0;
+        // strike...
+        for (let i = 0; i < 4; i++) {
+          if (generateNumber[i] === inputNumber[i]) {
+            strike++;
+          }
+        }
+
+        // ball;
+        for (let i = 0; i < 4; i++) {
+          for (let j = 0; j < 4; j++) {
+            if (i === j) {
+              continue;
+            } else {
+              if (generateNumber[i] === inputNumber[j]) {
+                ball++;
+              }
+            }
+          }
+        }
+
+        // console.log("strike:", strike, ", ball:", ball);
+        result = `strike: ${strike}, ball: ${ball}`;
+        if (strike === 4) {
+          result = "HOME RUN!";
+          count = 0;
+        } else if (strike === 0 && ball === 0) {
+          result = "OUT!";
+        }
+
+        return result;
+      };
+
+      const onClick = (e) => {
+        if (inputNumber.length !== 4) {
+          console.log("입력된 수가 잘 못 되었습니다.");
+          return;
+        }
+        count++;
+        $count.textContent = count;
+        $result.textContent = comapreNumber();
+      };
+
+      $input.addEventListener("input", onInput);
+      $button.addEventListener("click", onClick);
+
+      console.log(generateNumber);
+    </script>
+  </body>
 </html>
