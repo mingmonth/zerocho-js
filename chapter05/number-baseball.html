@@ -61,13 +61,6 @@
             // $logs.textContent = "홈런";
             $logs.innerHTML += "홈런!!!<br />";
           }
-          if (tries.length >= 9) {
-            console.log("실패!!!");
-            $logs.innerHTML +=
-              value + "<br />실패!!!<br />" + answer.join("") + "<br />";
-          } else {
-            $logs.innerHTML += value + "<br />";
-          }
 
           // 스트라이크 볼 판단
           // answer: 3146, value: 1234
@@ -83,8 +76,16 @@
               }
             }
           }
+
+          $logs.innerHTML +=
+            `(${
+              tries.length + 1
+            }) ${value} : strike: ${strike}, ball: ${ball}` + "<br />";
           // console.log("strike:", strike, ", ball:", ball);
-          $logs.innerHTML += `strike: ${strike}, ball: ${ball}` + "<br />";
+          if (tries.length >= 9) {
+            console.log("실패!!!");
+            $logs.innerHTML += "실패!!! 정답:" + answer.join("") + "<br />";
+          }
 
           tries.push(value);
         }
