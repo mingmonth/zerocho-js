@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>lotto</title>
+  </head>
+  <body>
+    <!-- div>span#num$*6 -->
+    <div>
+      추첨 결과는:
+      <span id="num1"></span>
+      <span id="num2"></span>
+      <span id="num3"></span>
+      <span id="num4"></span>
+      <span id="num5"></span>
+      <span id="num6"></span>
+    </div>
+
+    <div>보너스:<span id="bonus"></span></div>
+    <script>
+      // 숫자를 준비한다. (1~45)
+      let numbers = [];
+      numbers = Array(45)
+        .fill()
+        .map((element, index) => {
+          return index + 1;
+        });
+      console.log(numbers);
+      // 숫자를 섞는다.
+
+      // 공 7개를 랜덤하게 뽑느다. 마지막 공은 보너스 공이 된다.
+      let ball = [];
+
+      Array(7)
+        .fill()
+        .map((element, i) => {
+          const index = Math.floor(Math.random() * numbers.length);
+          ball.push(numbers[index]);
+          numbers.splice(index, 1);
+        });
+      console.log(ball);
+
+      const $span_all = document.querySelectorAll("span");
+
+      // 1초 마다 뽑힌 공을 화면에 표시한다.
+      for (let i = 0; i < 7; i++) {
+        setTimeout(() => {
+          $span_all[i].textContent = ball[i];
+        }, 1000 * i);
+      }
+    </script>
+  </body>
+</html>
