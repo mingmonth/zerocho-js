@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>숫자야구</title>
+  </head>
+  <body>
+    <form id="form">
+      <input type="text" id="input" />
+      <button>확인</button>
+    </form>
+    <div id="logs"></div>
+    <script>
+      const $input = document.querySelector("#input");
+      const $form = document.querySelector("#form");
+      const $logs = document.querySelector("#logs");
+
+      const numbers = []; // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      for (let i = 0; i < 9; i++) {
+        numbers.push(i + 1);
+      }
+
+      const answer = [];
+      for (let i = 0; i < 4; i++) {
+        let index = Math.floor(Math.random() * numbers.length);
+        answer[i] = numbers[index];
+        numbers.splice(index, 1);
+      }
+
+      console.log(answer);
+
+      const tries = [];
+      const checkInput = (input) => {
+        // 4자리가 맞는지 확인.
+        if (input.length !== 4) {
+          return alert("4자리 숫자를 입력해 주세요.");
+        }
+        // 중복된 수가 있는지 확인. new Set size로 확인
+        if (new Set(input).size !== 4) {
+          return alert("중복되지 않게 입력해 주세요.");
+        }
+        // 이미 시도한 값 includes 로 확인.
+        if (tries.includes(input)) {
+          return alert("이미 시도한 입력 값입니다.");
+        }
+        return true;
+      };
+
+      // form 안에 버튼을 누르면 submit 이 호출됨.
+      $form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        // console.log("서브밋", event);
+        const value = $input.value;
+        $input.value = "";
+        if (checkInput(value)) {
+          console.log("횟수증가");
+          if (answer.join("") === value) {
+            console.log("홈런");
+            // $logs.textContent = "홈런";
+            $logs.innerHTML += "홈런!!!<br />";
+          }
+          if (tries.length >= 9) {
+            console.log("실패!!!");
+            $logs.innerHTML +=
+              value + "<br />실패!!!<br />" + answer.join("") + "<br />";
+          } else {
+            $logs.innerHTML += value + "<br />";
+          }
+
+          // 스트라이크 볼 판단
+          // answer: 3146, value: 1234
+          let strike = 0;
+          let ball = 0;
+          for (let i = 0; i < answer.length; i++) {
+            let index = value.indexOf(answer[i]);
+            if (index > -1) {
+              if (index === i) {
+                strike++;
+              } else {
+                ball++;
+              }
+            }
+          }
+          // console.log("strike:", strike, ", ball:", ball);
+          $logs.innerHTML += `strike: ${strike}, ball: ${ball}` + "<br />";
+
+          tries.push(value);
+        }
+      });
+    </script>
+  </body>
+</html>

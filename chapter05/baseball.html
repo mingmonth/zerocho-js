@@ -35,7 +35,7 @@
         }
       };
 
-      const rand_1_9 = () => {
+      const generateRandomNumber = () => {
         return Math.floor(Math.random() * 9) + 1;
       };
 
@@ -44,7 +44,7 @@
           // 탈출조건...
           break;
         }
-        let rand = rand_1_9();
+        let rand = generateRandomNumber();
         console.log(rand);
         if (generateNumber.includes(rand)) {
           console.log("같은 수 입니다.");
