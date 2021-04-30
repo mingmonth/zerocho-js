@@ -49,6 +49,26 @@
         return true;
       };
 
+      const drawResult = (value, strike, ball) => {
+        let message = "";
+        if (strike === 0 && ball === 0) {
+          outCount++;
+          message = `${outCount}out`;
+        } else {
+          message = `strike: ${strike}, ball: ${ball}`;
+        }
+
+        $logs.innerHTML +=
+          `(${tries.length + 1}) ${value} : ${message}` + "<br />";
+
+        if (outCount === 3 || tries.length >= 9) {
+          console.log("실패!!!");
+          $logs.innerHTML += "실패!!! 정답:" + answer.join("") + "<br />";
+          $form.removeEventListener("submit", onSubmit);
+          return;
+        }
+      };
+
       const onSubmit = (event) => {
         event.preventDefault();
         // console.log("서브밋", event);
@@ -78,31 +98,7 @@
             }
           }
         }
-
-        if (strike === 0 && ball === 0) {
-          outCount++;
-          console.log(`${outCount}out`);
-          $logs.innerHTML +=
-            `(${tries.length + 1}) ${value} : ${outCount}out` + "<br />";
-          if (outCount === 3) {
-            console.log("실패!!!");
-            $logs.innerHTML += "실패!!! 정답:" + answer.join("") + "<br />";
-            $form.removeEventListener("submit", onSubmit);
-            return;
-          }
-        } else {
-          $logs.innerHTML +=
-            `(${
-              tries.length + 1
-            }) ${value} : strike: ${strike}, ball: ${ball}` + "<br />";
-          // console.log("strike:", strike, ", ball:", ball);
-          if (tries.length >= 9) {
-            console.log("실패!!!");
-            $logs.innerHTML += "실패!!! 정답:" + answer.join("") + "<br />";
-            return;
-          }
-        }
-
+        drawResult(value, strike, ball);
         tries.push(value);
       };
 
