@@ -31,6 +31,7 @@
 
       console.log(answer);
 
+      let outCount = 0;
       const tries = [];
       const checkInput = (input) => {
         // 4자리가 맞는지 확인.
@@ -48,35 +49,48 @@
         return true;
       };
 
-      // form 안에 버튼을 누르면 submit 이 호출됨.
-      $form.addEventListener("submit", (event) => {
+      const onSubmit = (event) => {
         event.preventDefault();
         // console.log("서브밋", event);
         const value = $input.value;
         $input.value = "";
-        if (checkInput(value)) {
+        if (!checkInput(value)) {
           console.log("횟수증가");
-          if (answer.join("") === value) {
-            console.log("홈런");
-            // $logs.textContent = "홈런";
-            $logs.innerHTML += "홈런!!!<br />";
-          }
+          return;
+        }
+        if (answer.join("") === value) {
+          console.log("홈런");
+          // $logs.textContent = "홈런";
+          $logs.innerHTML += "홈런!!!<br />";
+        }
 
-          // 스트라이크 볼 판단
-          // answer: 3146, value: 1234
-          let strike = 0;
-          let ball = 0;
-          for (let i = 0; i < answer.length; i++) {
-            let index = value.indexOf(answer[i]);
-            if (index > -1) {
-              if (index === i) {
-                strike++;
-              } else {
-                ball++;
-              }
+        // 스트라이크 볼 판단
+        // answer: 3146, value: 1234
+        let strike = 0;
+        let ball = 0;
+        for (let i = 0; i < answer.length; i++) {
+          let index = value.indexOf(answer[i]);
+          if (index > -1) {
+            if (index === i) {
+              strike++;
+            } else {
+              ball++;
             }
           }
+        }
 
+        if (strike === 0 && ball === 0) {
+          outCount++;
+          console.log(`${outCount}out`);
+          $logs.innerHTML +=
+            `(${tries.length + 1}) ${value} : ${outCount}out` + "<br />";
+          if (outCount === 3) {
+            console.log("실패!!!");
+            $logs.innerHTML += "실패!!! 정답:" + answer.join("") + "<br />";
+            $form.removeEventListener("submit", onSubmit);
+            return;
+          }
+        } else {
           $logs.innerHTML +=
             `(${
               tries.length + 1
@@ -85,11 +99,15 @@
           if (tries.length >= 9) {
             console.log("실패!!!");
             $logs.innerHTML += "실패!!! 정답:" + answer.join("") + "<br />";
+            return;
           }
-
-          tries.push(value);
         }
-      });
+
+        tries.push(value);
+      };
+
+      // form 안에 버튼을 누르면 submit 이 호출됨.
+      $form.addEventListener("submit", onSubmit);
     </script>
   </body>
 </html>
