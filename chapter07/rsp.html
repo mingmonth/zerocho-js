@@ -54,9 +54,14 @@
 
       const clickButton = () => {
         clearInterval(intervalId);
+        $rock.removeEventListener("click", clickButton);
+        $scissors.removeEventListener("click", clickButton);
+        $paper.removeEventListener("click", clickButton);
         setTimeout(() => {
-          clearInterval(intervalId);
           intervalId = setInterval(changeComputerHand, 500);
+          $rock.addEventListener("click", clickButton);
+          $scissors.addEventListener("click", clickButton);
+          $paper.addEventListener("click", clickButton);
         }, 1000);
       };
 
