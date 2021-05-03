@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>lotto</title>
+    <style>
+      .ball {
+        display: inline-block;
+        border: 1px solid black;
+        border-radius: 20px;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 20px;
+        text-align: center;
+        margin-right: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- div>span#num$*6 -->
+    <div id="result">추첨 결과는?</div>
+
+    <div id="bonus">보너스:</div>
+    <script>
+      // 숫자를 준비한다. (1~45)
+      let numbers = [];
+      numbers = Array(45)
+        .fill()
+        .map((element, index) => {
+          return index + 1;
+        });
+      console.log(numbers);
+
+      let ball = [];
+
+      // 방식2. 공을 다른 배열에 섞어 넣는다.
+      const shuffle = [];
+      while (numbers.length > 0) {
+        const index = Math.floor(Math.random() * numbers.length);
+        const spliceArray = numbers.splice(index, 1);
+        const value = spliceArray[0];
+        shuffle.push(value);
+      }
+
+      console.log(shuffle);
+
+      // 앞에서부터 7개를 뽑는다.
+      // Array(7)
+      //   .fill()
+      //   .forEach((v, i) => {
+      //     ball.push(shuffle[i]);
+      //   });
+
+      ball = shuffle.slice(0, 6).sort((a, b) => a - b);
+      ball[6] = shuffle[6];
+      console.log(ball);
+
+      const $result = document.querySelector("#result");
+      const $bonus = document.querySelector("#bonus");
+      for (let i = 0; i < 7; i++) {
+        setTimeout(() => {
+          const $ball = document.createElement("div");
+          $ball.className = "ball";
+          $ball.textContent = ball[i];
+          if (i == 6) {
+            $bonus.appendChild($ball);
+          } else {
+            $result.appendChild($ball);
+          }
+        }, i * 1000);
+      }
+    </script>
+  </body>
+</html>

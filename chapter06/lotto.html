@@ -5,6 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>lotto</title>
+    <style>
+      .ball {
+        display: inline-block;
+        border: 1px solid black;
+        border-radius: 20px;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 20px;
+        text-align: center;
+        margin-right: 20px;
+      }
+    </style>
   </head>
   <body>
     <!-- div>span#num$*6 -->
@@ -28,18 +41,56 @@
           return index + 1;
         });
       console.log(numbers);
-      // 숫자를 섞는다.
 
-      // 공 7개를 랜덤하게 뽑느다. 마지막 공은 보너스 공이 된다.
       let ball = [];
 
+      // 방식1. 공을 기존 배열에 섞어 넣는다.
+      // const shuffle = (array) => {
+      //   for (let i = 0; i < array.length; i++) {
+      //     let j = Math.floor(Math.random() * (i + 1));
+      //     [array[i], array[j]] = [array[j], array[i]];
+      //   }
+      //   return array;
+      // };
+
+      // shuffle(numbers);
+
+      // console.log(numbers);
+
+      // 앞에서부터 7개를 뽑는다.
+      // Array(7)
+      //   .fill()
+      //   .forEach((v, i) => {
+      //     ball.push(numbers[i]);
+      //   });
+
+      // 방식2. 공을 다른 배열에 섞어 넣는다.
+      const shuffle = [];
+      while (numbers.length > 0) {
+        const index = Math.floor(Math.random() * numbers.length);
+        const spliceArray = numbers.splice(index, 1);
+        const value = spliceArray[0];
+        shuffle.push(value);
+      }
+
+      console.log(shuffle);
+
+      // 앞에서부터 7개를 뽑는다.
       Array(7)
         .fill()
-        .map((element, i) => {
-          const index = Math.floor(Math.random() * numbers.length);
-          ball.push(numbers[index]);
-          numbers.splice(index, 1);
+        .forEach((v, i) => {
+          ball.push(shuffle[i]);
         });
+
+      // 방식3. 공 7개를 랜덤하게 뽑느다. 마지막 공은 보너스 공이 된다.
+
+      // Array(7)
+      //   .fill()
+      //   .map((element, i) => {
+      //     const index = Math.floor(Math.random() * numbers.length);
+      //     ball.push(numbers[index]);
+      //     numbers.splice(index, 1);
+      //   });
       console.log(ball);
 
       const $span_all = document.querySelectorAll("span");
