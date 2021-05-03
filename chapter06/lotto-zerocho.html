@@ -58,7 +58,7 @@
       ball[6] = shuffle[6];
       console.log(ball);
 
-      const colorize = (number) => {
+      const colorize = (number, $tag) => {
         let backgroundColor = "white";
         let color = "black";
 
@@ -76,31 +76,28 @@
           backgroundColor = "blue";
           color = "white";
         }
-        return [backgroundColor, color];
+        $tag.style.backgroundColor = backgroundColor;
+        $tag.style.color = color;
       };
 
       const drawBall = (i) => {
-        setTimeout(() => {
-          const $ball = document.createElement("div");
-          $ball.className = "ball";
-          $ball.textContent = ball[i];
-          let backgroundColor = "white";
-          let color = "black";
-          [backgroundColor, color] = colorize(ball[i]);
-          $ball.style.backgroundColor = backgroundColor;
-          $ball.style.color = color;
-          if (i == 6) {
-            $bonus.appendChild($ball);
-          } else {
-            $result.appendChild($ball);
-          }
-        }, i * 1000);
+        const $ball = document.createElement("div");
+        $ball.className = "ball";
+        $ball.textContent = ball[i];
+        colorize(ball[i], $ball);
+        if (i == 6) {
+          $bonus.appendChild($ball);
+        } else {
+          $result.appendChild($ball);
+        }
       };
 
       const $result = document.querySelector("#result");
       const $bonus = document.querySelector("#bonus");
       for (let i = 0; i < 7; i++) {
-        drawBall(i);
+        setTimeout(() => {
+          drawBall(i);
+        }, i * 1000);
       }
     </script>
   </body>
