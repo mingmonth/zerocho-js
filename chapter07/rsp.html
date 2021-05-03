@@ -37,6 +37,7 @@
       };
 
       let computerChoice = "-0";
+      let xDupClick;
 
       const changeComputerHand = () => {
         if (computerChoice === rspX.scissors) {
@@ -48,20 +49,21 @@
         }
         $computer.style.background = `url(${IMG_URL}) ${computerChoice} 0`;
         $computer.style.backgroundSize = "auto 200px";
+        xDupclick = true;
       };
 
-      let intervalId = [];
-      intervalId.push(setInterval(changeComputerHand, 500));
+      let intervalId = setInterval(changeComputerHand, 500);
 
       const clickButton = () => {
-        while (intervalId.length) {
-          console.log(intervalId.length);
-          clearInterval(intervalId.pop());
+        if (xDupClick) {
+          clearInterval(intervalId);
+          setTimeout(() => {
+            xDupclick = false;
+            intervalId = setInterval(changeComputerHand, 500);
+          }, 1000);
+        } else {
+          console.log("xDupClick: ", xDupClick);
         }
-
-        setTimeout(() => {
-          intervalId.push(setInterval(changeComputerHand, 500));
-        }, 1000);
       };
 
       $rock.addEventListener("click", clickButton);
