@@ -61,10 +61,30 @@
       const $result = document.querySelector("#result");
       const $bonus = document.querySelector("#bonus");
       for (let i = 0; i < 7; i++) {
+        let backgroundColor = "white";
+        let color = "black";
         setTimeout(() => {
           const $ball = document.createElement("div");
           $ball.className = "ball";
           $ball.textContent = ball[i];
+          // $ball.backgroundColor = "red";
+          console.log(typeof ball[i]);
+          if (ball[i] < 10) {
+            backgroundColor = "red";
+            color = "white";
+          } else if (ball[i] >= 10 && ball[i] < 20) {
+            backgroundColor = "orange";
+          } else if (ball[i] >= 20 && ball[i] < 30) {
+            backgroundColor = "yellow";
+          } else if (ball[i] >= 30 && ball[i] < 40) {
+            backgroundColor = "green";
+            color = "white";
+          } else if (ball[i] >= 40) {
+            backgroundColor = "blue";
+            color = "white";
+          }
+          $ball.style.backgroundColor = backgroundColor;
+          $ball.style.color = color;
           if (i == 6) {
             $bonus.appendChild($ball);
           } else {
