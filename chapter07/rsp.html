@@ -52,17 +52,23 @@
 
       let intervalId = setInterval(changeComputerHand, 500);
 
+      let clickable = true;
+
       const clickButton = () => {
-        clearInterval(intervalId);
-        $rock.removeEventListener("click", clickButton);
-        $scissors.removeEventListener("click", clickButton);
-        $paper.removeEventListener("click", clickButton);
-        setTimeout(() => {
-          intervalId = setInterval(changeComputerHand, 500);
-          $rock.addEventListener("click", clickButton);
-          $scissors.addEventListener("click", clickButton);
-          $paper.addEventListener("click", clickButton);
-        }, 1000);
+        if (clickable) {
+          clearInterval(intervalId);
+          // $rock.removeEventListener("click", clickButton);
+          // $scissors.removeEventListener("click", clickButton);
+          // $paper.removeEventListener("click", clickButton);
+          clickable = false;
+          setTimeout(() => {
+            clickable = true;
+            intervalId = setInterval(changeComputerHand, 500);
+            // $rock.addEventListener("click", clickButton);
+            // $scissors.addEventListener("click", clickButton);
+            // $paper.addEventListener("click", clickButton);
+          }, 1000);
+        }
       };
 
       $rock.addEventListener("click", clickButton);
