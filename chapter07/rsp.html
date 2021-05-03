@@ -54,13 +54,54 @@
 
       let clickable = true;
 
-      const clickButton = () => {
+      const convertSizeToString = (choice) => {
+        let ret = "";
+        if (choice === rspX.scissors) {
+          ret = "가위";
+        } else if (choice === rspX.rock) {
+          ret = "바위";
+        } else if (choice === rspX.paper) {
+          ret = "보";
+        }
+        return ret;
+      };
+
+      const judge = (userChoice) => {
+        if (userChoice === convertSizeToString(computerChoice)) {
+          console.log("비겼다.");
+        } else {
+          if (userChoice === "가위") {
+            if (convertSizeToString(computerChoice) === "바위") {
+              console.log("졌다.");
+            } else {
+              console.log("이겼다.");
+            }
+          } else if (userChoice === "바위") {
+            if (convertSizeToString(computerChoice) === "보") {
+              console.log("졌다.");
+            } else {
+              console.log("이겼다.");
+            }
+          } else if (userChoice === "보") {
+            if (convertSizeToString(computerChoice) === "가위") {
+              console.log("졌다.");
+            } else {
+              console.log("이겼다.");
+            }
+          }
+        }
+      };
+
+      const clickButton = (e) => {
+        console.log(e.target.textContent);
         if (clickable) {
+          judge(e.target.textContent);
           clearInterval(intervalId);
           // $rock.removeEventListener("click", clickButton);
           // $scissors.removeEventListener("click", clickButton);
           // $paper.removeEventListener("click", clickButton);
           clickable = false;
+          console.log(computerChoice);
           setTimeout(() => {
             clickable = true;
             intervalId = setInterval(changeComputerHand, 500);
