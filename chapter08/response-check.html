@@ -59,18 +59,24 @@
           // 평균계산을 위한 배열 기록..
           elapsed = new Date().getTime() - start;
           results.push(elapsed);
-          // console.log(results);
-          avg = results.reduce((a, c) => a + c) / results.length;
-          results.sort((a, b) => a - b);
           console.log(results);
+          avg = results.reduce((a, c) => a + c) / results.length;
+          const ranks = results.sort((a, b) => a - b).slice(0, 5);
+          console.log(ranks);
 
           $result.textContent = `반응속도: ${elapsed}밀리초, 평균반응속도: ${avg}밀리초`;
           $result.innerHTML += "<br />";
 
-          for (let i = 0; i < Math.min(results.length, 5); i++) {
-            console.log(results[i]);
-            $result.innerHTML += `${i + 1} : ${results[i]}` + "<br />";
-          }
+          // for (let i = 0; i < rank.length; i++) {
+          //   console.log(rank[i]);
+          //   $result.innerHTML += `${i + 1} : ${rank[i]}` + "<br />";
+          // }
+          ranks.forEach((rank, index) => {
+            $result.append(
+              document.createElement("br"),
+              `${index + 1}위: ${rank}ms`
+            );
+          });
 
           $screen.classList = "waiting";
           $screen.textContent = "클릭해서 시작하세요";
