@@ -17,6 +17,7 @@
       }
       #screen.ready {
         background-color: red;
+        color: white;
       }
       #screen.now {
         background-color: greenyellow;
@@ -33,55 +34,47 @@
       let start = 0;
       let elapsed = 0;
       let results = [];
-      let total = 0;
       let avg = 0;
-      let clickable = true;
       let timeoutId;
       const onClickScreen = () => {
         console.log("clicked!!!");
-        if (clickable) {
-          if ($screen.classList.contains("waiting")) {
-            $screen.classList = "ready";
-            clickable = false;
-            timeoutId = setTimeout(() => {
-              clickable = true;
-              start = new Date().getTime();
-              $screen.classList = "now";
-            }, (Math.random() * 10 + 1) * 1000);
-            console.log(timeoutId);
-            //clearTimeout(timeoutId);
-          } else if ($screen.classList.contains("now")) {
-            clickable = false;
-            // diff 표시...
-            // 평균계산을 위한 배열 기록..
-            elapsed = new Date().getTime() - start;
-            results.push(elapsed);
-            console.log(results);
-            for (let i = 0; i < results.length; i++) {
-              total += results[i];
-            }
-
-            avg = total / results.length;
-            total = 0;
-            console.log(total, results.length);
-
-            $result.textContent = `반응속도: ${elapsed}밀리초, 평균반응속도: ${avg}밀리초`;
-            setTimeout(() => {
-              clickable = true;
-              $screen.classList = "waiting";
-            }, 1000);
-          }
-        } else {
-          if ($screen.classList.contains("ready")) {
-            console.log(timeoutId);
-            clearTimeout(timeoutId);
-            $screen.classList = "waiting";
-            $result.textContent =
-              "너무 빨리 누르셨습니다. 다시 시도해주세요!!!";
+        if ($screen.classList.contains("waiting")) {
+          $screen.classList = "ready";
+          $screen.textContent = "초록색이 되면 클릭하세요.";
+          timeoutId = setTimeout(() => {
             clickable = true;
-          }
-        }
+            start = new Date().getTime();
+            $screen.classList = "now";
+          }, (Math.random() * 10 + 1) * 1000);
+          console.log(timeoutId);
+          //clearTimeout(timeoutId);
+        } else if ($screen.classList.contains("ready")) {
+          console.log(timeoutId);
+          clearTimeout(timeoutId);
+          $screen.classList = "waiting";
+          $screen.textContent = "클릭해서 시작하세요";
+          $result.textContent = "너무 빨리 누르셨습니다. 다시 시도해주세요!!!";
+        } else if ($screen.classList.contains("now")) {
+          // diff 표시...
+          // 평균계산을 위한 배열 기록..
+          elapsed = new Date().getTime() - start;
+          results.push(elapsed);
+          // console.log(results);
+          avg = results.reduce((a, c) => a + c) / results.length;
+          results.sort((a, b) => a - b);
+          console.log(results);
 
+          $result.textContent = `반응속도: ${elapsed}밀리초, 평균반응속도: ${avg}밀리초`;
+          $result.innerHTML += "<br />";
+
+          for (let i = 0; i < Math.min(results.length, 5); i++) {
+            console.log(results[i]);
+            $result.innerHTML += `${i + 1} : ${results[i]}` + "<br />";
+          }
+
+          $screen.classList = "waiting";
+          $screen.textContent = "클릭해서 시작하세요";
+        }
         //console.log($screen.classList.contains("waiting"));
       };
 
