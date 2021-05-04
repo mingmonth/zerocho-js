@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>반응속도테스트</title>
+    <style>
+      #screen {
+        width: 300px;
+        height: 200px;
+        text-align: center;
+        user-select: none;
+      }
+      #screen.waiting {
+        background-color: aqua;
+      }
+      #screen.ready {
+        background-color: red;
+      }
+      #screen.now {
+        background-color: greenyellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="screen" class="waiting">클릭해서 시작하세요</div>
+    <div id="result"></div>
+    <script>
+      const $screen = document.querySelector("#screen");
+      const $result = document.querySelector("#result");
+
+      let start = 0;
+      let elapsed = 0;
+      let results = [];
+      let total = 0;
+      let avg = 0;
+      let clickable = true;
+      let timeoutId;
+      const onClickScreen = () => {
+        console.log("clicked!!!");
+        if (clickable) {
+          if ($screen.classList.contains("waiting")) {
+            $screen.classList = "ready";
+            clickable = false;
+            timeoutId = setTimeout(() => {
+              clickable = true;
+              start = new Date().getTime();
+              $screen.classList = "now";
+            }, (Math.random() * 10 + 1) * 1000);
+            console.log(timeoutId);
+            //clearTimeout(timeoutId);
+          } else if ($screen.classList.contains("now")) {
+            clickable = false;
+            // diff 표시...
+            // 평균계산을 위한 배열 기록..
+            elapsed = new Date().getTime() - start;
+            results.push(elapsed);
+            console.log(results);
+            for (let i = 0; i < results.length; i++) {
+              total += results[i];
+            }
+
+            avg = total / results.length;
+            total = 0;
+            console.log(total, results.length);
+
+            $result.textContent = `반응속도: ${elapsed}밀리초, 평균반응속도: ${avg}밀리초`;
+            setTimeout(() => {
+              clickable = true;
+              $screen.classList = "waiting";
+            }, 1000);
+          }
+        } else {
+          if ($screen.classList.contains("ready")) {
+            console.log(timeoutId);
+            clearTimeout(timeoutId);
+            $screen.classList = "waiting";
+            $result.textContent =
+              "너무 빨리 누르셨습니다. 다시 시도해주세요!!!";
+            clickable = true;
+          }
+        }
+
+        //console.log($screen.classList.contains("waiting"));
+      };
+
+      $screen.addEventListener("click", onClickScreen);
+    </script>
+  </body>
+</html>
