@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>가위바위보</title>
+    <style>
+      #computer {
+        width: 163px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="computer"></div>
+    <div>
+      <button id="scissors">가위</button>
+      <button id="rock">바위</button>
+      <button id="paper">보</button>
+    </div>
+    <div>점수: <span id="score">0</span></div>
+    <div>
+      <span id="win-count">0</span>승 <span id="draw-count">0</span>무
+      <span id="lose-count">0</span>패
+    </div>
+    <script>
+      $computer = document.querySelector("#computer");
+      $scissors = document.querySelector("#scissors");
+      $rock = document.querySelector("#rock");
+      $paper = document.querySelector("#paper");
+      $score = document.querySelector("#score");
+      $winCount = document.querySelector("#win-count");
+      $drawCount = document.querySelector("#draw-count");
+      $loseCount = document.querySelector("#lose-count");
+      const IMG_URL = "./rsp.png";
+      $computer.style.background = `url(${IMG_URL}) 0, 0`;
+      $computer.style.backgroundSize = "auto 200px";
+
+      const rspInfo = {
+        scissors: {
+          x: "0",
+          score: 1,
+        },
+        rock: {
+          x: "-230px",
+          score: 0,
+        },
+        paper: {
+          x: "-442px",
+          score: -1,
+        },
+      };
+
+      let computerChoice = "scissors";
+      let score = 0;
+      let winCount = 0;
+      let drawCount = 0;
+      let loseCount = 0;
+
+      const changeComputerHand = () => {
+        if (computerChoice === "scissors") {
+          computerChoice = "rock";
+        } else if (computerChoice === "rock") {
+          computerChoice = "paper";
+        } else if (computerChoice === "paper") {
+          computerChoice = "scissors";
+        }
+        $computer.style.background = `url(${IMG_URL}) ${rspInfo[computerChoice].x}, 0`;
+        $computer.style.backgroundSize = "auto 200px";
+      };
+
+      const winOrLose = (myChoice) => {
+        const myScore = rspInfo[myChoice].score;
+        const computerScore = rspInfo[computerChoice].score;
+        const diff = myScore - computerScore;
+        if ([2, -1].includes(diff)) {
+          score += 1;
+          winCount += 1;
+          $winCount.textContent = winCount;
+        } else if ([1, -2].includes(diff)) {
+          score -= 1;
+          loseCount += 1;
+          $loseCount.textContent = loseCount;
+        } else {
+          drawCount += 1;
+          $drawCount.textContent = drawCount;
+        }
+      };
+
+      let intervalId = setInterval(changeComputerHand, 50);
+      let clickable = true;
+
+      const onButtonClick = (e) => {
+        console.log(e.target.textContent);
+        if (clickable) {
+          clickable = false;
+          clearInterval(intervalId);
+          let myChoice =
+            e.target.textContent === "가위"
+              ? "scissors"
+              : e.target.textContent === "바위"
+              ? "rock"
+              : "paper";
+          winOrLose(myChoice);
+          if (winCount >= 3) {
+          } else if (loseCount >= 3) {
+          } else {
+            setTimeout(() => {
+              clickable = true;
+              intervalId = setInterval(changeComputerHand, 50);
+            }, 1000);
+          }
+        }
+      };
+
+      $scissors.addEventListener("click", onButtonClick);
+      $rock.addEventListener("click", onButtonClick);
+      $paper.addEventListener("click", onButtonClick);
+    </script>
+  </body>
+</html>
