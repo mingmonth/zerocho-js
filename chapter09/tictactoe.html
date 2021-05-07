@@ -94,6 +94,41 @@
       // let tempFunc = undefined;
       let isGameOver = false;
 
+      const findEmptyPosition = () => {
+        let candidate = [];
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            if (data[i][j] === null) {
+              console.log("candidate: ", i, j);
+              candidate.push([i, j]);
+            }
+          }
+        }
+        const index = Math.floor(Math.random() * candidate.length);
+        return candidate[index];
+      };
+
+      const computeChoice = () => {
+        // 빈 자리 찾기 무작위 선택...
+        let i, j;
+        [i, j] = findEmptyPosition();
+        console.log(i, j);
+        data[i][j] = turn;
+        document.body.children[1].children[i].children[j].textContent = turn;
+        const hasWinner = checkWinner(i, j);
+        if (hasWinner) {
+          $div.textContent = `${turn} 승`;
+          isGameOver = true;
+          // removeTdEvent();
+        }
+        // 무승부 검사
+        const isDraw = checkDraw();
+        if (isDraw) {
+          $div.textContent = `무승부`;
+        }
+        turn = turn === "O" ? "X" : "O";
+      };
+
       const callback = (i, j) => {
         return (e) => {
           if (isGameOver) return;
@@ -105,14 +140,17 @@
             $div.textContent = `${turn} 승`;
             isGameOver = true;
             // removeTdEvent();
+            return;
           }
           // 무승부 검사
           const isDraw = checkDraw();
           if (isDraw) {
             $div.textContent = `무승부`;
+            return;
           }
 
           turn = turn === "O" ? "X" : "O";
+          computeChoice();
         };
       };
 
