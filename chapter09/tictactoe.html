@@ -48,26 +48,29 @@
 
       console.log(data);
 
+      const { body } = document;
+
+      const callback = (i, j) => {
+        return (e) => {
+          if (e.target.textContent) return;
+          e.target.textContent = turn;
+          turn = turn === "O" ? "X" : "O";
+          data[i][j] = turn;
+        };
+      };
+
       const $table = document.createElement("table");
       for (let i = 0; i < 3; i++) {
         $tr = document.createElement("tr");
         for (let j = 0; j < 3; j++) {
           $td = document.createElement("td");
-          $td.addEventListener("click", (e) => {
-            if (e.target.textContent) return;
-            e.target.textContent = turn;
-            if (turn === "O") {
-              turn = "X";
-            } else if (turn === "X") {
-              turn = "O";
-            }
-            data[i][j] = turn;
-          });
+          $td.addEventListener("click", callback(i, j));
           $tr.append($td);
         }
         $table.append($tr);
       }
-      document.body.append($table);
+      //$table.addEventListener("click", callback);
+      body.append($table);
       // const $div = document.createElement("div");
       // $div.textContent = `${turn} 승`;
       // document.body.append($div);
