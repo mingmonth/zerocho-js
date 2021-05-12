@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise-test</title>
+  </head>
+  <body>
+    <div id="total-time">0</div>
+    <div>결과는:<span id="result-value"></span></div>
+    <script>
+      $totalTime = document.querySelector("#total-time");
+      $resultValue = document.querySelector("#result-value");
+      console.log($totalTime);
+      console.log($resultValue);
+
+      // callback
+      function workCallback(num, onSuccess, onError) {
+        setTimeout(() => {
+          if (num < 10) {
+            end = new Date().getTime();
+            onSuccess(end - start);
+          } else {
+            onError(new Error("plz check num value"));
+          }
+        }, num * 1000);
+      }
+
+      let start = new Date().getTime();
+      let end = 0;
+
+      workCallback(
+        3,
+        (success) => {
+          console.log(success);
+          workCallback(6, console.log, console.log);
+        },
+        (error) => console.log(error)
+      );
+
+      workCallback(9, console.log, console.log);
+    </script>
+  </body>
+</html>
