@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>지뢰 찾기</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid #bbb;
+        text-align: center;
+        line-height: 20px;
+        width: 20px;
+        height: 20px;
+        background: #888;
+      }
+      td.opend {
+        background: white;
+      }
+      td.flag {
+        background: red;
+      }
+      td.question {
+        background: orange;
+      }
+    </style>
+  </head>
+  <body>
+    <table id="table">
+      <tbody></tbody>
+    </table>
+    <div id="result"></div>
+    <script>
+      const $tbody = document.querySelector("#table tbody");
+      const $result = document.querySelector("#result");
+
+      const row = 10;
+      const cell = 10;
+      const mineNumber = 10;
+      const data = [];
+
+      // 이중 배열
+      for (let i = 0; i < row; i++) {
+        const cells = [];
+        for (let j = 0; j < cell; j++) {
+          cells.push(j);
+        }
+        data.push(cells);
+      }
+    </script>
+  </body>
+</html>

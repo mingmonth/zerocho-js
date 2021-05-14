@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+
+      td {
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+      }
+    </style>
+    <title>tictactoe</title>
+  </head>
+  <body>
+    <script>
+      const { body } = document;
+      $table = document.createElement("table");
+      $result = document.createElement("div");
+      const rows = [];
+      let turn = "O";
+
+      const checkWinner = (event) => {
+        let result = false;
+        const rowIndex = event.target.parentNode.rowIndex;
+        const cellIndex = event.target.cellIndex;
+        // rows[rowIndex][cellIndex] = turn;
+        console.log(rowIndex, cellIndex);
+
+        // 가로
+        if (
+          rows[rowIndex][0].textContent === turn &&
+          rows[rowIndex][1].textContent === turn &&
+          rows[rowIndex][2].textContent === turn
+        ) {
+          result = true;
+        }
+
+        // 세로
+        if (
+          rows[0][cellIndex].textContent === turn &&
+          rows[1][cellIndex].textContent === turn &&
+          rows[2][cellIndex].textContent === turn
+        ) {
+          result = true;
+        }
+
+        // 대각선1
+        if (
+          rows[0][0].textContent === turn &&
+          rows[1][1].textContent === turn &&
+          rows[2][2].textContent === turn
+        ) {
+          result = true;
+        }
+
+        // 대각선2
+        if (
+          rows[0][2].textContent === turn &&
+          rows[1][1].textContent === turn &&
+          rows[2][0].textContent === turn
+        ) {
+          result = true;
+        }
+
+        return result;
+      };
+
+      const callback = (event) => {
+        if (event.target.textContent !== "") {
+          console.log("이미 선택된 칸입니다.");
+          return;
+        }
+        event.target.textContent = turn;
+
+        // checkWinner;
+        if (checkWinner(event)) {
+          $result.textContent = `${turn} 이 이겼습니다`;
+          $table.removeEventListener("click", callback);
+          return;
+        }
+
+        // checkDraw
+        if (rows.flat().every((cell) => cell.textContent)) {
+          console.log("무승부입니다.");
+          return;
+        }
+
+        // swtich turn
+        turn = turn === "O" ? "X" : "O";
+      };
+
+      for (let i = 0; i < 3; i++) {
+        $tr = document.createElement("tr");
+        const cells = [];
+        for (let j = 0; j < 3; j++) {
+          $td = document.createElement("td");
+          cells.push($td);
+          $tr.append($td);
+        }
+        rows.push(cells);
+        $table.append($tr);
+      }
+      $table.addEventListener("click", callback);
+      body.append($table);
+      body.append($result);
+    </script>
+  </body>
+</html>
